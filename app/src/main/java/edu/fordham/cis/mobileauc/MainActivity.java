@@ -108,6 +108,8 @@ public class MainActivity extends Activity {
             }
         });
 
+        mPricePrompt.setText("Asking Price: ");
+
         //Default is the Buyer
         mRadioBuyer.setChecked(true);
         mRadioBuyer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
