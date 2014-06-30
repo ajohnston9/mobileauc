@@ -48,7 +48,6 @@ public class MainActivity extends Activity {
     private final String TAG               = "edu.fordham.cis.mobileauc.MainActivity";
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +61,7 @@ public class MainActivity extends Activity {
         mInterval1Text = (TextView)    findViewById(R.id.interval1Text);
         mInterval2Text = (TextView)    findViewById(R.id.interval2Text);
         mSubmitButton  = (Button)      findViewById(R.id.submitButton);
+
         //Check for Bluetooth now so we can launch an intent should it need to be enabled
         BluetoothManager bluetoothManager = (BluetoothManager)
                 getSystemService(Context.BLUETOOTH_SERVICE);
@@ -71,6 +71,7 @@ public class MainActivity extends Activity {
             Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBluetooth, REQUEST_ENABLE_BT);
         }
+
         //SeekBars should have sane default values
         mInterval1Seek.setMax(MAX_INTERVAL_SIZE);
         mInterval2Seek.setMax(MAX_INTERVAL_SIZE);
@@ -106,6 +107,7 @@ public class MainActivity extends Activity {
 
             }
         });
+
         //Default is the Buyer
         mRadioBuyer.setChecked(true);
         mRadioBuyer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -121,6 +123,7 @@ public class MainActivity extends Activity {
                 }
             }
         });
+
         //We can only advertise during Interval 1, so fire off an error if we're not
         //in that interval. Otherwise, launch a progress dialog and a new thread for
         //Bluetooth Low Energy (yay!)
@@ -143,6 +146,7 @@ public class MainActivity extends Activity {
                             "Sorry, you must be in the first interval", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 //We're in the first interval now and all settings are set, Launch Progress Dialog
                 AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
                     @Override
