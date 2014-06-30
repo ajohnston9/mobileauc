@@ -43,7 +43,7 @@ public class MainActivity extends Activity {
 
     private boolean mIsUserSeller = false;
 
-    private final int    MAX_INTERVAL_SIZE = 30;
+    private final int    MAX_INTERVAL_SIZE = 29;
     private final int    REQUEST_ENABLE_BT = 1;
     private final String TAG               = "edu.fordham.cis.mobileauc.MainActivity";
 
@@ -94,7 +94,7 @@ public class MainActivity extends Activity {
         mInterval2Seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mInterval2Text.setText(progress + "min");
+                mInterval2Text.setText((progress+1) + " mins");
             }
 
             @Override
@@ -138,8 +138,8 @@ public class MainActivity extends Activity {
                     Toast.makeText(MainActivity.this, "Not supported yet.",
                             Toast.LENGTH_SHORT).show();
                 }
-                int interval1 = mInterval1Seek.getProgress();
-                int interval2 = mInterval2Seek.getProgress();
+                int interval1 = mInterval1Seek.getProgress()+1;
+                int interval2 = mInterval2Seek.getProgress()+1;
                 Time now = new Time();
                 now.setToNow();
                 int minute = now.minute;
