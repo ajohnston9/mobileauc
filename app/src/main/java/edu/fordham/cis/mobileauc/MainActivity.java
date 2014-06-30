@@ -135,7 +135,8 @@ public class MainActivity extends Activity {
                 //If the user is a Seller, they must have a price
                 if (mIsUserSeller) {
                     //Grab the price here
-                    Toast.makeText(MainActivity.this, "Not supported yet.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Not supported yet.",
+                            Toast.LENGTH_SHORT).show();
                 }
                 int interval1 = mInterval1Seek.getProgress();
                 int interval2 = mInterval2Seek.getProgress();
@@ -143,7 +144,7 @@ public class MainActivity extends Activity {
                 now.setToNow();
                 int minute = now.minute;
                 minute = minute % (interval1 + interval2);
-                if (minute > interval1) { //If we're in the first interval
+                if (minute > interval1) { //If we're in the second interval
                     Toast.makeText(MainActivity.this,
                             "Sorry, you must be in the first interval", Toast.LENGTH_SHORT).show();
                     return;
@@ -156,7 +157,7 @@ public class MainActivity extends Activity {
                         ProgressDialog pd = new ProgressDialog(MainActivity.this);
                         pd.setTitle("Looking for Peers...");
                         pd.setMessage("Please wait while we find peers for auction");
-                        pd.setIndeterminate(true); //We don't have definitive progress measurementss
+                        pd.setIndeterminate(true); //We don't have definitive progress measurements
                         pd.show();
                     }
 
@@ -164,11 +165,15 @@ public class MainActivity extends Activity {
                     protected Void doInBackground(Void... voids) {
                         if (mIsUserSeller) {
                             SellerManager manager = new SellerManager(mAdapter);
+                            Thread sellerThread = new Thread(manager);
+                            sellerThread.run();
                             //TODO: Cleanup work post-connection
                         }
                         //TODO: Launch Buyer Thread
                         return null;
                     }
+
+
                 };
                 task.execute((Void[]) null); //Start with no args
 
