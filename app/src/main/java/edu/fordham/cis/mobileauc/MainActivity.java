@@ -157,6 +157,7 @@ public class MainActivity extends Activity {
                         pd.setTitle("Looking for Peers...");
                         pd.setMessage("Please wait while we find peers for auction");
                         pd.setIndeterminate(true); //We don't have definitive progress measurementss
+                        pd.show();
                     }
 
                     @Override
