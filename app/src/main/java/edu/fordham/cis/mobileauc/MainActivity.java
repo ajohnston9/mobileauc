@@ -108,7 +108,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        mPricePrompt.setText("Asking Price: ");
+        mPricePrompt.setText("Maximum Bid: ");
 
         //Default is the Buyer
         mRadioBuyer.setChecked(true);
