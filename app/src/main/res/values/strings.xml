@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MobileAuc</string>
+    <string name="action_settings">Settings</string>
+    <string name="buyer">Buyer</string>
+    <string name="seller">Seller</string>
+    <string name="time_opts">DEBUG: Timeframe Adjustment: </string>
+    <string name="interval1">Interval 1: </string>
+    <string name="interval2">Interval 2: </string>
+    <string name="submit">Submit</string>
+    <string name="title_activity_data_transfer">Transferring Data</string>
+
+</resources>
