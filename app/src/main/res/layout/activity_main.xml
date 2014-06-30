@@ -38,6 +38,7 @@
             android:id="@+id/sellerPricePrompt"/>
         <EditText
             android:layout_width="wrap_content"
+            android:inputType="numberDecimal"
             android:layout_height="wrap_content"
             android:id="@+id/sellerPrice"/>
     </LinearLayout>
