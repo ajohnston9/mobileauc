@@ -78,7 +78,7 @@ public class MainActivity extends Activity {
         mInterval1Seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mInterval1Text.setText((progress+1) + " mins");
+                mInterval1Text.setText((progress+1) + "min");
             }
 
             @Override
@@ -94,7 +94,7 @@ public class MainActivity extends Activity {
         mInterval2Seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mInterval2Text.setText((progress+1) + " mins");
+                mInterval2Text.setText((progress+1) + "min");
             }
 
             @Override
