@@ -8,6 +8,7 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -60,8 +61,14 @@ public class SellerManager implements Runnable {
                     e.printStackTrace();
                 }
             }
-            ArrayList<BluetoothDevice> mScannedDevices = scanner.getmDevices();
-
+            ArrayList<BluetoothDevice> mScannedDevices = scanner.getDevices();
+            //If nothing was returned, we leave the method
+            if (mScannedDevices == null) {
+                Log.d(TAG, "No Buyers Found!");
+                //Don't bother doing the other steps
+                Toast.makeText(context, "Sorry, no Buyers found!", Toast.LENGTH_SHORT).show();
+                return;
+            }
             for(BluetoothDevice device : mScannedDevices){
 
                 mBluetoothGatt = device.connectGatt(context, false, mGattCallback);

@@ -73,7 +73,7 @@ public class SellerScanner implements Runnable{
         return finishedScanning;
     }
 
-    public ArrayList<BluetoothDevice> getmDevices(){
+    public ArrayList<BluetoothDevice> getDevices(){
         return mDevices;
     }
 
