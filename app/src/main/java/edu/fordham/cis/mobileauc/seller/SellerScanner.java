@@ -57,7 +57,7 @@ public class SellerScanner implements Runnable{
 
     private void scanLeDevice(){
 
-        Log.i(TAG, "SellerScanner begininng scan for devices.");
+        Log.i(TAG, "SellerScanner beginning scan for devices.");
         mHandler.postDelayed(new Runnable() {
                 
             @Override
