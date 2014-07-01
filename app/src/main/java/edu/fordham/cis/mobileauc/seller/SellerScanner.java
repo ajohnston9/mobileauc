@@ -3,6 +3,7 @@ package edu.fordham.cis.mobileauc.seller;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -80,6 +81,8 @@ public class SellerScanner implements Runnable{
     public void run() {
 
         Log.i(TAG, "SellerScanner running!");
+        Looper.prepare();
+        mHandler = new Handler();
         scanLeDevice();
     }
 }
