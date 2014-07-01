@@ -1,7 +1,6 @@
 package edu.fordham.cis.mobileauc.seller;
 
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothProfile;
@@ -15,13 +14,11 @@ public class SellerManager implements Runnable {
 
     private BluetoothAdapter mAdapter;
     private volatile boolean terminate = false;
-    private int scanPeriod = 0;
 
 
     public SellerManager(BluetoothAdapter adapter, int scanPeriod) {
 
         mAdapter = adapter;
-        this.scanPeriod = scanPeriod;
     }
 
     public void terminate() {
@@ -40,6 +37,7 @@ public class SellerManager implements Runnable {
 
         }
     }
+
 
     private BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
         @Override
