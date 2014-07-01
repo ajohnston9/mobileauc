@@ -131,6 +131,20 @@ public class MainActivity extends Activity {
                 }
             }
         });
+        //Not technically necessary, but we'll add hooks to Seller radio button as well
+        mRadioSeller.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if(isChecked) {
+                    mPricePrompt.setText("Asking Price: ");
+                    mIsUserSeller = true;
+                }
+                else {
+                    mPricePrompt.setText("Maximum Bid: ");
+                    mIsUserSeller = false;
+                }
+            }
+        });
 
         //We can only advertise during Interval 1, so fire off an error if we're not
         //in that interval. Otherwise, launch a progress dialog and a new thread for
@@ -205,6 +219,10 @@ public class MainActivity extends Activity {
         });
     }
 
+    /**
+     * Meant to set the static price variable which I could access from the onClickListener
+     * FIXME: Change to getPrice(), find a way for this to be called from submit button's onClick()
+     */
     public void setPriceField() {
         String strPrice = mPriceField.getText().toString();
         double dblPrice = 0d; //Needed to prevent uninitialized error
