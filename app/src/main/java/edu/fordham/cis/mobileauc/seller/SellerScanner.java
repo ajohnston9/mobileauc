@@ -25,6 +25,10 @@ public class SellerScanner implements Runnable{
     private volatile boolean finishedScanning = false;
     private volatile ArrayList<BluetoothDevice> mDevices;
 
+    /**
+     * Handles how each device is processed when it is found during scanning
+     * Spawns a new thread to handle logging and adding to the ArrayList
+     */
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback(){
 
         @Override
@@ -47,7 +51,7 @@ public class SellerScanner implements Runnable{
         mAdapter = bluetoothAdapter;
         this.scanPeriod = scanPeriod;
 
-        Log.i(TAG, "SellerScanner instantiated!");
+        Log.i(TAG, "SellerScanner instantiated with scan period of " + scanPeriod + " seconds");
     }
 
 
