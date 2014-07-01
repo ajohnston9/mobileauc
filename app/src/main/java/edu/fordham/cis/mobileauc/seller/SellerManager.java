@@ -79,28 +79,47 @@ public class SellerManager implements Runnable {
 
     private BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
         @Override
+        /**
+         * Called whenever we connect or disconnect from a device.
+         */
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
-            super.onConnectionStateChange(gatt, status, newState);
+            //TODO: Do we need the super call?
+            //super.onConnectionStateChange(gatt, status, newState);
 
-            if(status == BluetoothGatt.GATT_SUCCESS && newState == BluetoothProfile.STATE_CONNECTED){
-
-                // We are connected to GATT client??
-
-                gatt.discoverServices();
+            //When we're connected, make sure they are offering MobileAuc services
+            //i.e. they're not some fucking Fitbit/Pebble poseur
+            if(status == BluetoothProfile.STATE_CONNECTED) {
+                Log.d(TAG, "Connected to GATT Server on " + gatt.getDevice().getAddress());
+                Log.d(TAG, "Attempting to start service discovery");
+                mBluetoothGatt.discoverServices();
             }
-            else if(status == BluetoothGatt.GATT_SUCCESS && newState == BluetoothProfile.STATE_DISCONNECTED){
-
-                // We have disconnected from a GATT client??
+            else if (status == BluetoothProfile.STATE_DISCONNECTED) {
+                Log.d(TAG, "Disconnected from GATT Server");
             }
         }
 
         @Override
+        /**
+         * Runs whenever a new service on the device is found
+         */
         public void onServicesDiscovered(BluetoothGatt gatt, int status){
 
-            // Start reading/writing characteristics from connected GATT
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                //TODO: Check if the server offers MobileAuc services
+                //TODO: If so, fetch bid price and store BLE Address and Bid amt
+            }
+            else { //Some sort of error happened
+                Log.e(TAG, "onServicesDiscovered() received status code " + status);
+            }
+
         }
 
         @Override
+        /**
+         *Runs whenever we read a characteristic from a server
+         *NOTE: Characteristic contains a value and (potentially?) multiple descriptors
+         *TODO: Figure out what those are and retrieve the one for bids
+         */
         public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status){
 
             if(status == BluetoothGatt.GATT_SUCCESS){
