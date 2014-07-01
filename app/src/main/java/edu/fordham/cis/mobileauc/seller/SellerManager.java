@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -15,6 +16,8 @@ import java.util.ArrayList;
  * @version 0.01
  */
 public class SellerManager implements Runnable {
+
+    private final String TAG = "edu.fordham.cis.mobileauc.seller.SellerManager";
 
     private BluetoothAdapter mAdapter;
     private volatile boolean terminate = false;
@@ -28,6 +31,8 @@ public class SellerManager implements Runnable {
         mAdapter = adapter;
         this.scanPeriod = scanPeriod;
         this.context = context;
+
+        Log.i(TAG, "SellerManager instantiated!");
     }
 
     public void terminate() {
@@ -39,6 +44,8 @@ public class SellerManager implements Runnable {
         while (!terminate) {
             //TODO: Set up a GATT Client Here
             //TODO: Connect to GATT Servers, Push Ask, Store Bid
+
+            Log.i(TAG, "SellerManager running!");
 
             SellerScanner scanner = new SellerScanner(mAdapter, scanPeriod*60000);
             Thread scannerThread = new Thread(scanner);
