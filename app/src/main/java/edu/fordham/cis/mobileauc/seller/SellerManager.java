@@ -31,7 +31,6 @@ public class SellerManager implements Runnable {
     public void run() {
         while (!terminate) {
             //TODO: Set up a GATT Client Here
-            //TODO: Scan for GATT Servers Here
             //TODO: Connect to GATT Servers, Push Ask, Store Bid
 
             SellerScanner scanner = new SellerScanner(mAdapter, scanPeriod*60000);

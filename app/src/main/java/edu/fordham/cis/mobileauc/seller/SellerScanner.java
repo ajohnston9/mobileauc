@@ -14,8 +14,8 @@ public class SellerScanner implements Runnable{
     private BluetoothAdapter mAdapter;
     private int scanPeriod = 0;
     private Handler mHandler;
-
-    private ArrayList<BluetoothDevice> mDevices;
+    private volatile boolean finishedScanning = false;
+    private volatile ArrayList<BluetoothDevice> mDevices;
 
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback(){
 
@@ -48,12 +48,21 @@ public class SellerScanner implements Runnable{
             public void run() {
 
                 mAdapter.stopLeScan(mLeScanCallback);
+                finishedScanning = true;
             };
         }, scanPeriod);
 
         mAdapter.startLeScan(mLeScanCallback);
     }
 
+    public boolean isFinished(){
+
+        return finishedScanning;
+    }
+
+    public ArrayList<BluetoothDevice> getmDevices(){
+        return mDevices;
+    }
 
     @Override
     public void run() {
