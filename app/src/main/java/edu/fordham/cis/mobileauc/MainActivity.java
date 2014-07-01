@@ -21,6 +21,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import edu.fordham.cis.mobileauc.buyer.BuyerManager;
 import edu.fordham.cis.mobileauc.seller.SellerManager;
 
 /**
@@ -138,6 +139,7 @@ public class MainActivity extends Activity {
                     Toast.makeText(MainActivity.this, "Not supported yet.",
                             Toast.LENGTH_SHORT).show();
                 }
+
                 int interval1 = mInterval1Seek.getProgress()+1;
                 int interval2 = mInterval2Seek.getProgress()+1;
                 Time now = new Time();
@@ -169,7 +171,10 @@ public class MainActivity extends Activity {
                             sellerThread.run();
                             //TODO: Cleanup work post-connection
                         }
-                        //TODO: Launch Buyer Thread
+                        BuyerManager buyerManager = new BuyerManager(mAdapter);
+                        Thread buyerThread = new Thread(buyerManager);
+                        buyerThread.run();
+                        //TODO: Cleanup work post-connection
                         return null;
                     }
 
