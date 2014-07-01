@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothProfile;
+import android.content.Context;
 
 import java.util.ArrayList;
 
@@ -18,12 +19,15 @@ public class SellerManager implements Runnable {
     private BluetoothAdapter mAdapter;
     private volatile boolean terminate = false;
     private int scanPeriod;
+    private Context context;
 
+    private BluetoothGatt mBluetoothGatt;
 
-    public SellerManager(BluetoothAdapter adapter, int scanPeriod) {
+    public SellerManager(BluetoothAdapter adapter, int scanPeriod, Context context) {
 
         mAdapter = adapter;
         this.scanPeriod = scanPeriod;
+        this.context = context;
     }
 
     public void terminate() {
@@ -49,6 +53,11 @@ public class SellerManager implements Runnable {
                 }
             }
             ArrayList<BluetoothDevice> mScannedDevices = scanner.getmDevices();
+
+            for(BluetoothDevice device : mScannedDevices){
+
+                mBluetoothGatt = device.connectGatt(context, false, mGattCallback);
+            }
         }
     }
 
@@ -73,7 +82,7 @@ public class SellerManager implements Runnable {
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status){
 
-            // Start reading/writing characteristics from connected gatt
+            // Start reading/writing characteristics from connected GATT
         }
     };
 

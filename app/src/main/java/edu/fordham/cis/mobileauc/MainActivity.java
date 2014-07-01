@@ -164,7 +164,7 @@ public class MainActivity extends Activity {
                     @Override
                     protected Void doInBackground(Void... voids) {
                         if (mIsUserSeller) {
-                            SellerManager manager = new SellerManager(mAdapter, interval1);
+                            SellerManager manager = new SellerManager(mAdapter, interval1, MainActivity.this);
                             Thread sellerThread = new Thread(manager);
                             sellerThread.run();
                             //TODO: Cleanup work post-connection
