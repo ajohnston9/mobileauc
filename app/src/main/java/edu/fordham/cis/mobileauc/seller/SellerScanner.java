@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Created by Anthony on 7/1/14.
  */
-public class SellerScanner {
+public class SellerScanner implements Runnable{
 
     private BluetoothAdapter mAdapter;
     private int scanPeriod = 0;
@@ -40,27 +40,23 @@ public class SellerScanner {
     }
 
 
-    private void scanLeDevice(final boolean enable){
+    private void scanLeDevice(){
 
-        if(enable){
+        mHandler.postDelayed(new Runnable() {
+                
+            @Override
+            public void run() {
 
-            // We can begin to scan
+                mAdapter.stopLeScan(mLeScanCallback);
+            };
+        }, scanPeriod);
 
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-
-                    mAdapter.stopLeScan(mLeScanCallback);
-                };
-            }, scanPeriod);
-
-            mAdapter.startLeScan(mLeScanCallback);
-        }
-        else{
-            mAdapter.stopLeScan(mLeScanCallback);
-        }
-
+        mAdapter.startLeScan(mLeScanCallback);
     }
 
 
+    @Override
+    public void run() {
+        scanLeDevice();
+    }
 }

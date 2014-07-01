@@ -14,11 +14,13 @@ public class SellerManager implements Runnable {
 
     private BluetoothAdapter mAdapter;
     private volatile boolean terminate = false;
+    private int scanPeriod;
 
 
     public SellerManager(BluetoothAdapter adapter, int scanPeriod) {
 
         mAdapter = adapter;
+        this.scanPeriod = scanPeriod;
     }
 
     public void terminate() {
@@ -32,8 +34,9 @@ public class SellerManager implements Runnable {
             //TODO: Scan for GATT Servers Here
             //TODO: Connect to GATT Servers, Push Ask, Store Bid
 
-
-
+            SellerScanner scanner = new SellerScanner(mAdapter, scanPeriod*60000);
+            Thread scannerThread = new Thread(scanner);
+            scannerThread.start();
 
         }
     }
