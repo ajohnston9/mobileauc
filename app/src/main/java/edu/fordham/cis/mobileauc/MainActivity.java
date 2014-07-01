@@ -44,6 +44,11 @@ public class MainActivity extends Activity {
 
     private boolean mIsUserSeller = false;
 
+    /**
+     *Holds the price per Megabyte of data. Needs to be static so it can be referenced in View.OnClickListener()
+     */
+    public static int mPrice = 0;
+
     private final int    MAX_INTERVAL_SIZE = 29;
     private final int    REQUEST_ENABLE_BT = 1;
     private final String TAG               = "edu.fordham.cis.mobileauc.MainActivity";
@@ -134,10 +139,10 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 //If the user is a Seller, they must have a price
+                //FIXME: How do I call getPrice() from this context??
                 int price;
                 if (mIsUserSeller) {
                     Log.i(TAG, "User is set as Seller");
-                    //Grab the price here
                     Toast.makeText(MainActivity.this, "WARNING: Not supported yet.",
                             Toast.LENGTH_SHORT).show();
                 }
@@ -200,7 +205,7 @@ public class MainActivity extends Activity {
         });
     }
 
-    private int getPrice() {
+    public void setPriceField() {
         String strPrice = mPriceField.getText().toString();
         double dblPrice = 0d; //Needed to prevent uninitialized error
         try {
@@ -209,8 +214,7 @@ public class MainActivity extends Activity {
             Log.d(TAG, "Tried to format null variable. Please check for null values before" +
                     "calling MainActivity.getPrice()");
         }
-        int price = (int) (dblPrice*100);
-        return price;
+        mPrice = (int) (dblPrice*100);;
     }
 
     @Override
