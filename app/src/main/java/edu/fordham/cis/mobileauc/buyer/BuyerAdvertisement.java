@@ -1,10 +1,12 @@
 package edu.fordham.cis.mobileauc.buyer;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.le.AdvertiseCallback;
 import android.bluetooth.le.AdvertiseSettings;
 import android.bluetooth.le.AdvertisementData;
 import android.bluetooth.le.BluetoothLeAdvertiser;
 import android.os.ParcelUuid;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -34,6 +36,18 @@ public class BuyerAdvertisement implements Runnable {
     public void run() {
         mAdvertiser = mAdapter.getBluetoothLeAdvertiser();
         AdvertiseSettings settings = this.getAdvertisementSettings();
+        mAdvertiser.startAdvertising(settings, this.getAdvertisementData(), new AdvertiseCallback() {
+            @Override
+            public void onSuccess(AdvertiseSettings advertiseSettings) {
+                //Handle Success Here
+            }
+
+            @Override
+            public void onFailure(int i) {
+                Log.d(TAG, "Advertisement failed with code " + i);
+            }
+        });
+
 
 
 
@@ -49,7 +63,6 @@ public class BuyerAdvertisement implements Runnable {
         builder.setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_BALANCED);
         builder.setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_HIGH);
         //This will allow other devices to query and actually connect
-        //TODO: Respond to queries with asking price (not in this method, just a general note)
         builder.setAdvertiseMode(AdvertiseSettings.ADVERTISE_TYPE_CONNECTABLE);
         AdvertiseSettings settings = builder.build();
         return settings;

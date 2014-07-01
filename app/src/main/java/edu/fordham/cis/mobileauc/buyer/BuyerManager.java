@@ -20,7 +20,7 @@ public class BuyerManager implements Runnable {
     @Override
     public void run() {
         //TODO: Set up a GATT Server Here
-        //TODO: Respond to Scan Responses Requests
+        //TODO: Initialize BuyerAdvertisement, pass UUID of GATT Server
         //TODO: Accept Notifications of Ask Amount
         //TODO: Allow 'Read' of Bid Amount
         //TODO: Wait for Notification of Auction Success
