@@ -200,6 +200,19 @@ public class MainActivity extends Activity {
         });
     }
 
+    private int getPrice() {
+        String strPrice = mPriceField.getText().toString();
+        double dblPrice = 0d; //Needed to prevent uninitialized error
+        try {
+            dblPrice = Double.parseDouble(strPrice);
+        } catch (NumberFormatException e) {
+            Log.d(TAG, "Tried to format null variable. Please check for null values before" +
+                    "calling MainActivity.getPrice()");
+        }
+        int price = (int) (dblPrice*100);
+        return price;
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_ENABLE_BT) {
