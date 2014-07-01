@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
+import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.util.Log;
@@ -90,6 +91,15 @@ public class SellerManager implements Runnable {
         public void onServicesDiscovered(BluetoothGatt gatt, int status){
 
             // Start reading/writing characteristics from connected GATT
+        }
+
+        @Override
+        public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status){
+
+            if(status == BluetoothGatt.GATT_SUCCESS){
+
+                // Get data from BluetoothGattCharacteristic and manipulate it
+            }
         }
     };
 

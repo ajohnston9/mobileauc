@@ -134,6 +134,7 @@ public class MainActivity extends Activity {
             public void onClick(View view) {
                 //If the user is a Seller, they must have a price
                 if (mIsUserSeller) {
+                    Log.i(TAG, "User is seller, pop up toast.");
                     //Grab the price here
                     Toast.makeText(MainActivity.this, "Not supported yet.",
                             Toast.LENGTH_SHORT).show();
