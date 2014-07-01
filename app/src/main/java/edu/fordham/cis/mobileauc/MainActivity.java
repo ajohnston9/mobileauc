@@ -138,7 +138,7 @@ public class MainActivity extends Activity {
                     Toast.makeText(MainActivity.this, "Not supported yet.",
                             Toast.LENGTH_SHORT).show();
                 }
-                int interval1 = mInterval1Seek.getProgress()+1;
+                final int interval1 = mInterval1Seek.getProgress()+1;
                 int interval2 = mInterval2Seek.getProgress()+1;
                 Time now = new Time();
                 now.setToNow();
@@ -164,7 +164,7 @@ public class MainActivity extends Activity {
                     @Override
                     protected Void doInBackground(Void... voids) {
                         if (mIsUserSeller) {
-                            SellerManager manager = new SellerManager(mAdapter);
+                            SellerManager manager = new SellerManager(mAdapter, interval1);
                             Thread sellerThread = new Thread(manager);
                             sellerThread.run();
                             //TODO: Cleanup work post-connection
