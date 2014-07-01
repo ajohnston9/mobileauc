@@ -51,13 +51,13 @@ public class SellerScanner implements Runnable{
         mAdapter = bluetoothAdapter;
         this.scanPeriod = scanPeriod;
 
-        Log.i(TAG, "SellerScanner instantiated with scan period of " + scanPeriod + " seconds");
+        Log.i(TAG, "SellerScanner instantiated with scan period of " + (scanPeriod/1000) + " seconds");
     }
 
 
     private void scanLeDevice(){
 
-        Log.i(TAG, "SellerScanner about to scan for devices.");
+        Log.i(TAG, "SellerScanner begininng scan for devices.");
         mHandler.postDelayed(new Runnable() {
                 
             @Override
