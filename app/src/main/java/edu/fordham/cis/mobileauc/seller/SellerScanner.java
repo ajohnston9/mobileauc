@@ -8,7 +8,11 @@ import android.util.Log;
 import java.util.ArrayList;
 
 /**
- * Created by Anthony on 7/1/14.
+ * Scans for buyers using BluetoothLeScan and contains list of BluetoothDevices
+ *
+ * @version 0.01
+ * @author Anthony Canicatti
+ *
  */
 public class SellerScanner implements Runnable{
 
