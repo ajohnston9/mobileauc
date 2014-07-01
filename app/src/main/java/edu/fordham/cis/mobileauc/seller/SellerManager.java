@@ -1,9 +1,12 @@
 package edu.fordham.cis.mobileauc.seller;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothProfile;
+
+import java.util.ArrayList;
 
 /**
  * Handles the setting up of the Seller Components
@@ -37,6 +40,15 @@ public class SellerManager implements Runnable {
             Thread scannerThread = new Thread(scanner);
             scannerThread.start();
 
+            while(!scanner.isFinished()){
+                try {
+                    // Sleep until scanner has finished scanning
+                    Thread.sleep(100l);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            ArrayList<BluetoothDevice> mScannedDevices = scanner.getmDevices();
         }
     }
 
