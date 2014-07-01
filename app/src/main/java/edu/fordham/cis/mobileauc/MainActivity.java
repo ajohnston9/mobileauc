@@ -21,6 +21,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import edu.fordham.cis.mobileauc.buyer.BuyerManager;
 import edu.fordham.cis.mobileauc.seller.SellerManager;
 
 /**
@@ -133,10 +134,16 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 //If the user is a Seller, they must have a price
+                int price;
                 if (mIsUserSeller) {
-                    Log.i(TAG, "User is seller, pop up toast.");
+                    Log.i(TAG, "User is set as Seller");
                     //Grab the price here
-                    Toast.makeText(MainActivity.this, "Not supported yet.",
+                    Toast.makeText(MainActivity.this, "WARNING: Not supported yet.",
+                            Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Log.i(TAG, "User is set as Buyer");
+                    Toast.makeText(MainActivity.this, "WARNING: Not supported yet.",
                             Toast.LENGTH_SHORT).show();
                 }
                 final int interval1 = mInterval1Seek.getProgress()+1;
@@ -176,7 +183,9 @@ public class MainActivity extends Activity {
                             sellerThread.run();
                             //TODO: Cleanup work post-connection
                         }
-                        //TODO: Launch Buyer Thread
+                        BuyerManager buyerManager = new BuyerManager(mAdapter);
+                        Thread buyerThread = new Thread(buyerManager);
+                        buyerThread.run();
                         return null;
                     }
 
