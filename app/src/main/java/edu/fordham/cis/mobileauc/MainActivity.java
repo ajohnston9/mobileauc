@@ -153,8 +153,21 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 //If the user is a Seller, they must have a price
-                //FIXME: How do I call getPrice() from this context??
-                int price;
+
+                // This should get the price as an integer in pennies
+                String priceStr = mPriceField.getText().toString();
+                if(priceStr.isEmpty() || priceStr.equals("")){
+
+                    Toast.makeText(getApplicationContext(), "Enter a valid price!", Toast.LENGTH_SHORT).show();
+                    return;
+                }else{
+
+                    double priceDou = Double.parseDouble(priceStr) * 100;
+                    int price = (int)priceDou;
+                    Log.i(TAG, "User entered price: "+price+" pennies");
+                }
+
+
                 if (mIsUserSeller) {
                     Log.i(TAG, "User is set as Seller");
                     Toast.makeText(MainActivity.this, "WARNING: Not supported yet.",
@@ -201,6 +214,9 @@ public class MainActivity extends Activity {
                             Thread sellerThread = new Thread(manager);
                             sellerThread.run();
                             //TODO: Cleanup work post-connection
+
+                            // will this fix the error?
+                            return null;
                         }
                         BuyerManager buyerManager = new BuyerManager(mAdapter);
                         Thread buyerThread = new Thread(buyerManager);
