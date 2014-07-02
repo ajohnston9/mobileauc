@@ -21,6 +21,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import edu.fordham.cis.mobileauc.buyer.BuyerManager;
 import edu.fordham.cis.mobileauc.seller.SellerManager;
 
@@ -29,8 +32,9 @@ import edu.fordham.cis.mobileauc.seller.SellerManager;
  * @author Andrew Johnston
  * @version 0.01
  */
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements Observer{
 
+    // Widgets
     private RadioButton      mRadioBuyer;
     private RadioButton      mRadioSeller;
     private EditText         mPriceField;
@@ -42,6 +46,7 @@ public class MainActivity extends Activity {
     private Button           mSubmitButton;
     private BluetoothAdapter mAdapter;
 
+    // Hold whether the user is seller or buyer
     private boolean mIsUserSeller = false;
 
     /**
@@ -67,6 +72,9 @@ public class MainActivity extends Activity {
         mInterval1Text = (TextView)    findViewById(R.id.interval1Text);
         mInterval2Text = (TextView)    findViewById(R.id.interval2Text);
         mSubmitButton  = (Button)      findViewById(R.id.submitButton);
+
+        mInterval1Text.setText("1min");
+        mInterval2Text.setText("1min");
 
         //Check for Bluetooth now so we can launch an intent should it need to be enabled
         BluetoothManager bluetoothManager = (BluetoothManager)
@@ -179,7 +187,7 @@ public class MainActivity extends Activity {
                             Toast.LENGTH_SHORT).show();
                 }
                 final int interval1 = mInterval1Seek.getProgress()+1;
-                int interval2 = mInterval2Seek.getProgress()+1;
+                final int interval2 = mInterval2Seek.getProgress()+1;
                 Time now = new Time();
                 now.setToNow();
                 int minute = now.minute;
@@ -192,9 +200,12 @@ public class MainActivity extends Activity {
 
                 //We're in the first interval now and all settings are set, Launch Progress Dialog
                 AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
+
+                    ProgressDialog pd = new ProgressDialog(MainActivity.this);
+
                     @Override
                     protected void onPreExecute() {
-                        ProgressDialog pd = new ProgressDialog(MainActivity.this);
+
                         pd.setTitle("Looking for Peers...");
                         pd.setMessage("Please wait while we find peers for auction");
                         pd.setIndeterminate(true); //We don't have definitive progress measurements
@@ -208,22 +219,29 @@ public class MainActivity extends Activity {
                             Time t = new Time();
                             t.setToNow();
                             int min = t.minute;
+                            min = min % (interval1+interval2);
 
                             // Run scanner for rest of interval 1
                             SellerManager manager = new SellerManager(mAdapter, (interval1-min), MainActivity.this);
                             Thread sellerThread = new Thread(manager);
-                            sellerThread.run();
+                            sellerThread.start();
                             //TODO: Cleanup work post-connection
 
                             // will this fix the error?
-                            return null;
+                            return (Void)null;
                         }
+                        // If user is buyer
                         BuyerManager buyerManager = new BuyerManager(mAdapter);
                         Thread buyerThread = new Thread(buyerManager);
                         buyerThread.run();
                         return null;
                     }
 
+                    @Override
+                    protected void onPostExecute(Void v){
+
+                        // Perhaps future use??
+                    }
 
                 };
                 task.execute((Void[]) null); //Start with no args
@@ -281,5 +299,10 @@ public class MainActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+
     }
 }

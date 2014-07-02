@@ -11,13 +11,14 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
 /**
  * Handles the setting up of the Seller Components
  * @author Andrew Johnston
  * @version 0.01
  */
-public class SellerManager implements Runnable {
+public class SellerManager extends Observable implements Runnable {
 
     private final String TAG = "edu.fordham.cis.mobileauc.seller.SellerManager";
 
@@ -28,6 +29,7 @@ public class SellerManager implements Runnable {
 
     private BluetoothGatt mBluetoothGatt;
 
+    // Constructor -- get passed data
     public SellerManager(BluetoothAdapter adapter, int scanPeriod, Context context) {
 
         mAdapter = adapter;
@@ -37,8 +39,13 @@ public class SellerManager implements Runnable {
         Log.i(TAG, "SellerManager instantiated!");
     }
 
+    // Will end the thread
     public void terminate() {
         terminate = true;
+    }
+
+    public boolean isRunning(){
+        return !terminate;
     }
 
     @Override
@@ -49,6 +56,7 @@ public class SellerManager implements Runnable {
 
             Log.i(TAG, "SellerManager running!");
 
+            // Scan for nearby devices
             SellerScanner scanner = new SellerScanner(mAdapter, scanPeriod*60000);
             Thread scannerThread = new Thread(scanner);
             scannerThread.start();
@@ -66,7 +74,7 @@ public class SellerManager implements Runnable {
             if (mScannedDevices == null) {
                 Log.d(TAG, "No Buyers Found!");
                 //Don't bother doing the other steps
-                Toast.makeText(context, "Sorry, no Buyers found!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "Sorry, no Buyers found!", Toast.LENGTH_SHORT).show();
                 return;
             }
             for(BluetoothDevice device : mScannedDevices){
@@ -76,7 +84,7 @@ public class SellerManager implements Runnable {
         }
     }
 
-
+    // Callback when device.connect() is called - either connection or disconnection
     private BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
         @Override
         /**

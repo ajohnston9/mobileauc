@@ -23,7 +23,6 @@ public class SellerScanner implements Runnable{
 
     private BluetoothAdapter mAdapter;
     private int scanPeriod = 0;
-    private Handler mHandler;
     private volatile boolean finishedScanning = false;
     private volatile ArrayList<BluetoothDevice> mDevices;
 
@@ -48,6 +47,7 @@ public class SellerScanner implements Runnable{
         }
     };
 
+    // Constructor -- get passed data
     public SellerScanner(BluetoothAdapter bluetoothAdapter, int scanPeriod){
 
         mAdapter = bluetoothAdapter;
@@ -56,12 +56,14 @@ public class SellerScanner implements Runnable{
         Log.i(TAG, "SellerScanner instantiated with scan period of " + (scanPeriod/1000) + " seconds");
     }
 
-
+    // Begin scanning area
     private void scanLeDevice(){
 
         Log.i(TAG, "SellerScanner beginning scan for devices.");
 
         mAdapter.startLeScan(mLeScanCallback);
+
+        // Set TimerTask for completion of LeScan
         Timer timer = new Timer();
         TimerTask task = new TimerTask() {
             @Override
@@ -73,22 +75,9 @@ public class SellerScanner implements Runnable{
         };
         timer.schedule(task, scanPeriod);
 
-        /* The old method using Handler, didn't work, implemented TimerTask above
-
-        mHandler.postDelayed(new Runnable() {
-                
-            @Override
-            public void run() {
-
-                Log.i(TAG, "SellerScanner finished scan.");
-                mAdapter.stopLeScan(mLeScanCallback);
-                finishedScanning = true;
-            };
-        }, scanPeriod);
-        */
-
     }
 
+    // Getters for data
     public boolean isFinished(){
 
         return finishedScanning;
@@ -102,8 +91,6 @@ public class SellerScanner implements Runnable{
     public void run() {
 
         Log.i(TAG, "SellerScanner running!");
-        Looper.prepare();
-        mHandler = new Handler();
         scanLeDevice();
     }
 }
