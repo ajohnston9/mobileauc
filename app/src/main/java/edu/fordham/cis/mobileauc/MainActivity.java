@@ -319,6 +319,7 @@ public class MainActivity extends Activity implements Observer{
                 @Override
                 public void run() {
 
+                    // Dialog to show user no buyers were found
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                     builder.setMessage(((Message) o).getMsg());
                     builder.setTitle("Warning");
