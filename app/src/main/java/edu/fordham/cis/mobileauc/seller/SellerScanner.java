@@ -7,6 +7,8 @@ import android.os.Looper;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Scans for buyers using BluetoothLeScan and contains list of BluetoothDevices
@@ -58,6 +60,21 @@ public class SellerScanner implements Runnable{
     private void scanLeDevice(){
 
         Log.i(TAG, "SellerScanner beginning scan for devices.");
+
+        mAdapter.startLeScan(mLeScanCallback);
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                Log.i(TAG, "SellerScanner finished scan.");
+                mAdapter.stopLeScan(mLeScanCallback);
+                finishedScanning = true;
+            }
+        };
+        timer.schedule(task, scanPeriod);
+
+        /* The old method using Handler, didn't work, implemented TimerTask above
+
         mHandler.postDelayed(new Runnable() {
                 
             @Override
@@ -68,8 +85,8 @@ public class SellerScanner implements Runnable{
                 finishedScanning = true;
             };
         }, scanPeriod);
+        */
 
-        mAdapter.startLeScan(mLeScanCallback);
     }
 
     public boolean isFinished(){

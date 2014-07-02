@@ -197,7 +197,7 @@ public class MainActivity extends Activity {
                             int min = t.minute;
 
                             // Run scanner for rest of interval 1
-                            SellerManager manager = new SellerManager(mAdapter, (interval1 - min), MainActivity.this);
+                            SellerManager manager = new SellerManager(mAdapter, 1, MainActivity.this);
                             Thread sellerThread = new Thread(manager);
                             sellerThread.run();
                             //TODO: Cleanup work post-connection
