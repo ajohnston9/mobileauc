@@ -1,10 +1,12 @@
 package edu.fordham.cis.mobileauc;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,6 +27,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import edu.fordham.cis.mobileauc.buyer.BuyerManager;
+import edu.fordham.cis.mobileauc.seller.Message;
 import edu.fordham.cis.mobileauc.seller.SellerManager;
 
 /**
@@ -48,6 +51,9 @@ public class MainActivity extends Activity implements Observer{
 
     // Hold whether the user is seller or buyer
     private boolean mIsUserSeller = false;
+
+    // Show status updates to user
+    ProgressDialog pd;
 
     /**
      *Holds the price per Megabyte of data. Needs to be static so it can be referenced in View.OnClickListener()
@@ -75,6 +81,8 @@ public class MainActivity extends Activity implements Observer{
 
         mInterval1Text.setText("1min");
         mInterval2Text.setText("1min");
+
+        pd = new ProgressDialog(MainActivity.this);
 
         //Check for Bluetooth now so we can launch an intent should it need to be enabled
         BluetoothManager bluetoothManager = (BluetoothManager)
@@ -201,8 +209,6 @@ public class MainActivity extends Activity implements Observer{
                 //We're in the first interval now and all settings are set, Launch Progress Dialog
                 AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
 
-                    ProgressDialog pd = new ProgressDialog(MainActivity.this);
-
                     @Override
                     protected void onPreExecute() {
 
@@ -222,7 +228,7 @@ public class MainActivity extends Activity implements Observer{
                             min = min % (interval1+interval2);
 
                             // Run scanner for rest of interval 1
-                            SellerManager manager = new SellerManager(mAdapter, (interval1-min), MainActivity.this);
+                            SellerManager manager = new SellerManager(mAdapter, (interval1-min), MainActivity.this, MainActivity.this);
                             Thread sellerThread = new Thread(manager);
                             sellerThread.start();
                             //TODO: Cleanup work post-connection
@@ -302,7 +308,32 @@ public class MainActivity extends Activity implements Observer{
     }
 
     @Override
-    public void update(Observable observable, Object o) {
+    public void update(Observable observable, final Object o) {
 
+        if(o instanceof Message){
+            // Cancel ProgressDialog, bring up warning message
+            Log.i(TAG, "Made it to update()");
+            pd.cancel();
+
+            MainActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setMessage(((Message) o).getMsg());
+                    builder.setTitle("Warning");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+
+                        @Override
+                        public void onClick(DialogInterface d, int i){
+
+                        }
+                    });
+                    builder.setIcon(android.R.drawable.ic_dialog_alert);
+                    builder.show();
+                }
+            });
+
+        }
     }
 }

@@ -12,6 +12,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Observer;
+
+import edu.fordham.cis.mobileauc.MainActivity;
 
 /**
  * Handles the setting up of the Seller Components
@@ -30,12 +33,12 @@ public class SellerManager extends Observable implements Runnable {
     private BluetoothGatt mBluetoothGatt;
 
     // Constructor -- get passed data
-    public SellerManager(BluetoothAdapter adapter, int scanPeriod, Context context) {
+    public SellerManager(BluetoothAdapter adapter, int scanPeriod, Context context, MainActivity m) {
 
         mAdapter = adapter;
         this.scanPeriod = scanPeriod;
         this.context = context;
-
+        addObserver(m);
         Log.i(TAG, "SellerManager instantiated!");
     }
 
@@ -74,7 +77,10 @@ public class SellerManager extends Observable implements Runnable {
             if (mScannedDevices == null) {
                 Log.d(TAG, "No Buyers Found!");
                 //Don't bother doing the other steps
-                //Toast.makeText(context, "Sorry, no Buyers found!", Toast.LENGTH_SHORT).show();
+
+                Message message = new Message("Sorry, no buyers found.");
+                this.setChanged();
+                this.notifyObservers(message);
                 return;
             }
             for(BluetoothDevice device : mScannedDevices){
@@ -95,7 +101,7 @@ public class SellerManager extends Observable implements Runnable {
             //super.onConnectionStateChange(gatt, status, newState);
 
             //When we're connected, make sure they are offering MobileAuc services
-            //i.e. they're not some fucking Fitbit/Pebble poseur
+            //i.e. they're not some Fitbit/Pebble poseur
             if(status == BluetoothProfile.STATE_CONNECTED) {
                 Log.d(TAG, "Connected to GATT Server on " + gatt.getDevice().getAddress());
                 Log.d(TAG, "Attempting to start service discovery");
